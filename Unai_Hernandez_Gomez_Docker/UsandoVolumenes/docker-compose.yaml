@@ -1,0 +1,23 @@
+version: "3.7"
+services:
+        rabbit-cliente:
+                build:  #Se genera la imagen a partir del dockerfile
+                        context: .
+                        dockerfile: Dockerfile
+                container_name: rabbit-cliente   #Se le asigna el nombre rabbit-cliente.
+                restart: on-failure     #En caso de que el cliente de error que vuelva a ejecutarse.
+                depends_on:
+                        - "rabbitmq"    #Se indica que el rabbit-cliente dependa del servicio rabbitmq. Así esperará a que rabbitmq esté activado
+        rabbitmq:
+                image: rabbitmq:3-management-alpine      #Se indica la imagen a descargar e iniciar para el servidor de rabbitmq
+                container_name: rabbitmq        #Se le asigna el nombre rabbitmq
+                ports:  #Se definen los puertos que se exponen y sus mapeos
+                        - 5672:5672
+                        - 15672:15672
+                environment:    #Se definen las variables de entorno para el usuario y su contrasena para rabbitmq.
+                        RABBITMQ_DEFAULT_USER: usuario
+                        RABBITMQ_DEFAULT_PASS: 123456
+                volumes:
+                        - ./rabbitmqPersistente:/var/lib/rabbitmq/mnesia
+volumes:
+        rabbitmqPersistente:
