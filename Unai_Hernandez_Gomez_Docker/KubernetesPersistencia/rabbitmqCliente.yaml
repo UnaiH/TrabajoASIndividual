@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+        name: cliente
+        labels:
+                app: cliente
+spec:
+        replicas: 1
+        selector:
+                matchLabels:
+                        app: cliente
+        template:
+                metadata:
+                        labels:
+                                app: cliente
+        spec:
+                container:
+                        - name: cliente
+                          image: unaihernandez/clienterabbitmq:v1
+                restartPolicy: Always

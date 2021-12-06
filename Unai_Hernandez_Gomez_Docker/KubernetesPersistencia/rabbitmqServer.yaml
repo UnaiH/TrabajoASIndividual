@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+        name: rabbitmq
+        labels:
+                service: rabbitmq
+spec:
+        replicas: 1
+        selector:
+                matchLabels:
+                        service: rabbitmq
+        template:
+                metadata:
+                        labels:
+                                service: rabbitmq
+                spec:
+                        volumes:
+                                - name: almacen
+                                  persistentVolumeClaim:
+                                          claimName:  volPersistente
+                        container:
+                                - name: rabbitmq
+                                  image: "rabbitmq:3-management-alpine"
+                                  env:
+                                        - name: RABBITMQ_DEFAULT_USER
+                                          value: usuario
+                                        - name: RABBITMQ_DEFAULT_PASS
+                                          value: '123456'
+                                  ports:
+                                        - containerPort: 5672
+                                        - containerPort: 15672
+                                  volumeMounts:
+                                          - name: almacen
+                                            mountPath: /var/lib/rabbitmq/mnesia
+                                            subPath: mnesia
+                          restartPolicy: Always                
