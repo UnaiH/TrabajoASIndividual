@@ -1,9 +1,7 @@
 version: "3.7"
 services:
         rabbit-cliente:
-                build:  #Se genera la imagen a partir del dockerfile
-                        context: .
-                        dockerfile: Dockerfile
+                image: unaihernandez/clienterabbitmq:v1 #Se descarga la imagen de dockerhub y se ejecuta
                 container_name: rabbit-cliente   #Se le asigna el nombre rabbit-cliente.
                 restart: on-failure     #En caso de que el cliente de error que vuelva a ejecutarse.
                 depends_on:
